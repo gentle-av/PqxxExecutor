@@ -20,3 +20,11 @@ target_link_libraries(PostgreSQLUtils PostgreSQL::PostgreSQL PostgreSQLQuery)
 
 add_executable(PqxxExecutor main.cpp)
 target_link_libraries(PqxxExecutor PostgreSQLUtils)
+
+install(
+  TARGETS PostgreSQLConnection PostgreSQLQuery PostgreSQLUtils
+  LIBRARY DESTINATION lib/pqxx-executor
+  ARCHIVE DESTINATION lib/pqxx-executor)
+
+install(FILES include/PostgreSQLConnection.h include/PostgreSQLQuery.h
+              include/PostgreSQLUtils.h DESTINATION include/pqxx-executor)
