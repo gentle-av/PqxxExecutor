@@ -1,0 +1,8 @@
+[
+{
+  "directory": "/home/avr/Code/projects/cpp/build/PqxxExecutor",
+  "command": "/usr/bin/c++  -isystem /usr/include/postgresql/server  -Wall -lpthread -std=gnu++20 -o CMakeFiles/PostgreSQLConnection.dir/src/PostgreSQLConnection.cpp.o -c /home/avr/Code/projects/cpp/PqxxExecutor/src/PostgreSQLConnection.cpp",
+  "file": "/home/avr/Code/projects/cpp/PqxxExecutor/src/PostgreSQLConnection.cpp",
+  "output": "CMakeFiles/PostgreSQLConnection.dir/src/PostgreSQLConnection.cpp.o"
+}
+]
