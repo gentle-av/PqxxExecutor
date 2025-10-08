@@ -1,0 +1,16 @@
+@PACKAGE_INIT@
+
+include("${CMAKE_CURRENT_LIST_DIR}/PqxxExecutorTargets.cmake")
+
+# Provide variables for include directories
+set(PqxxExecutor_INCLUDE_DIRS "@CMAKE_INSTALL_PREFIX@/include/pqxx-executor")
+set(PqxxExecutor_LIBRARY_DIRS "@CMAKE_INSTALL_PREFIX@/lib/pqxx-executor")
+
+# Check for required dependencies
+find_dependency(PostgreSQL REQUIRED)
+
+# Provide variables for each component
+set(PqxxExecutor_LIBRARIES PqxxExecutor::PostgreSQLUtils)
+set(PqxxExecutor_Connection_LIBRARIES PqxxExecutor::PostgreSQLConnection)
+set(PqxxExecutor_Query_LIBRARIES PqxxExecutor::PostgreSQLQuery)
+set(PqxxExecutor_Utils_LIBRARIES PqxxExecutor::PostgreSQLUtils)
