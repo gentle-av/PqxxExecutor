@@ -167,7 +167,10 @@ QueryResult::QueryResult(PGresult *result) : affectedRows(0) {
 
 bool QueryResult::loadFromResult(PGresult *result) {
   clear();
-
+  if (!result) {
+    errorMessage = "Null result pointer";
+    return false;
+  }
   if (!PostgreSQLUtils::isResultValid(result)) {
     errorMessage = "Invalid result";
     return false;
@@ -273,9 +276,8 @@ QueryResult PostgreSQLUtils::executeQuery(PostgreSQLConnection &connection,
     result.setErrorMessage("Connection is not established");
     return result;
   }
-  PGresult *pgResult = PQexec(connection.getRawConnection(), query.c_str());
-  result.loadFromResult(pgResult);
-  PQclear(pgResult);
+  PGResultWrapper wrapper(PQexec(connection.getRawConnection(), query.c_str()));
+  result.loadFromResult(wrapper.get());
   return result;
 }
 
@@ -292,11 +294,10 @@ PostgreSQLUtils::executeQueryParams(PostgreSQLConnection &connection,
   for (const auto &param : params) {
     paramValues.push_back(param.c_str());
   }
-  PGresult *pgResult = PQexecParams(
+  PGResultWrapper wrapper(PQexecParams(
       connection.getRawConnection(), query.c_str(), params.size(), nullptr,
-      paramValues.empty() ? nullptr : paramValues.data(), nullptr, nullptr, 0);
-  result.loadFromResult(pgResult);
-  PQclear(pgResult);
+      paramValues.empty() ? nullptr : paramValues.data(), nullptr, nullptr, 0));
+  result.loadFromResult(wrapper.get());
   return result;
 }
 
@@ -383,7 +384,6 @@ std::string PostgreSQLUtils::getValue(PGresult *result, int row, int col,
       col < 0 || col >= getColumnCount(result)) {
     return defaultValue;
   }
-
   const char *value = PQgetvalue(result, row, col);
   return value ? value : defaultValue;
 }
